@@ -1,0 +1,64 @@
+<h2>Wine Producer Supply Form</h2>
+<form id="producerSupplyForm">
+    <label>
+        Wine Name:
+        <input type="text" id="supplyWineName" required placeholder="Enter wine name" title="Wine name must only contain letters and spaces. No numbers allowed.">
+    </label>
+    <div id="nameError" style="color: red; display: none; font-size: 0.9em;">
+        Wine name must only contain letters and spaces. No numbers allowed.
+    </div>
+    <br><br>
+
+    <label>
+        Wine Type:
+        <select id="supplyWineType" required>
+            <option value="Red">Red</option>
+            <option value="White">White</option>
+            <option value="Rose">Rose</option>
+            <option value="Sparkling">Sparkling</option>
+            <option value="Dessert">Dessert</option>
+        </select>
+    </label>
+    <br><br>
+
+    <label>
+        Quantity Available:
+        <input type="number" id="supplyQuantity" min="1" required>
+    </label>
+    <br><br>
+
+    <label>
+        Price per Unit:
+        <input type="number" id="supplyPrice" min="0" step="0.01" required>
+    </label>
+    <br><br>
+
+    <button type="submit">Submit Supply</button>
+</form>
+
+<script>
+    const wineNameInput = document.getElementById('supplyWineName');
+    const nameError = document.getElementById('nameError');
+
+    // Real-time validation for Wine Name input
+    wineNameInput.addEventListener('input', function(event) {
+        // Replace any invalid characters and display error if numbers are present
+        wineNameInput.value = wineNameInput.value.replace(/[^A-Za-z\s]/g, '');
+        
+        if (/[^A-Za-z\s]/.test(event.target.value)) {
+            nameError.style.display = "block"; // Show error message
+        } else {
+            nameError.style.display = "none"; // Hide error message
+        }
+    });
+
+    document.getElementById('producerSupplyForm').addEventListener('submit', function(event) {
+        const wineName = wineNameInput.value.trim();
+        
+        // Final validation for only letters and spaces in Wine Name
+        if (!/^[A-Za-z\s]+$/.test(wineName)) {
+            nameError.style.display = "block";
+            event.preventDefault(); // Prevent form submission if invalid
+        }
+    });
+</script>
