@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Producer Supply Form</title>
+</head>
+<body>
+
 <h2>Wine Producer Supply Form</h2>
 <form id="producerSupplyForm">
     <label>
@@ -59,6 +68,37 @@
         if (!/^[A-Za-z\s]+$/.test(wineName)) {
             nameError.style.display = "block";
             event.preventDefault(); // Prevent form submission if invalid
+        } else {
+            // Collect form data
+            const formData = {
+                wineName: wineName,
+                wineType: document.getElementById('supplyWineType').value,
+                quantityAvailable: document.getElementById('supplyQuantity').value,
+                pricePerUnit: document.getElementById('supplyPrice').value
+            };
+
+            // Submit data to the API Gateway
+            fetch('https://your-api-id.execute-api.your-region.amazonaws.com/v1/submit-wine', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData), // Send the form data as JSON
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Data submitted successfully!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('There was an error submitting your request.');
+            });
+
+            event.preventDefault(); // Prevent default form submission
         }
     });
 </script>
+
+</body>
+</html>
